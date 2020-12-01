@@ -24,10 +24,11 @@ class App extends Component {
 
     return (
       <div className="App">
+        import ButtonGroup from 'react-bootstrap/ButtonGroup' import Button from
+        'react-bootstrap/Button'
         <section className="User__img">
           <img src={user} alt="user" />
         </section>
-
         <section className="User__info">
           <h2>{name}</h2>
           <p>
