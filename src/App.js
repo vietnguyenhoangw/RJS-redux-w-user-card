@@ -2,26 +2,38 @@ import React, { Component } from "react";
 import user from "./images/user.png";
 import "./App.css";
 
-import reducer from "./reducers";
-import { createStore } from "redux"; //an import from the redux library
+// bootstrap css
+import "bootstrap/dist/css/bootstrap.min.css";
 
-// this is the initial value passed
-const initialState = {
-  name: "Alex Bakery",
-  description: "Software Engineer, Speaker, and Occasional Model",
-  likes: "Cats, Wine, and Black dresses",
-  location: "localhost",
-};
+// bootstrap components
+import Button from "react-bootstrap/Button";
+import ButtonGroup from "react-bootstrap/ButtonGroup";
 
-// this method will create store
-// Reducer: only this parameters is requite for createStore()
-// initialState: is second parameters passed to createStore()
-const store = createStore(reducer, initialState);
+// redux
+// import store, where the states have been store
+import { store } from "./store";
+// import actions
+import { renameUser } from "./actions";
+// imoport connect to update state after dispatch
+import { connect } from 'react-redux';
 
 class App extends Component {
-  render() {
-    const { name, description, likes, location } = store.getState();
+  dispatchBtnAction = (e) => {
+    const btnId = e.target.id;
+    switch (btnId) {
+      case "daniel":
+        store.dispatch(renameUser("Daniel Nguyễn"));
+        break;
+      case "harris":
+        store.dispatch(renameUser("Harris Lee"));
+        break;
+      case "tom":
+        store.dispatch(renameUser("Tom and Jerry"));
+        break;
+    }
+  };
 
+  render() {
     return (
       <div className="App">
         <section className="User__img">
@@ -29,27 +41,59 @@ class App extends Component {
         </section>
 
         <section className="User__info">
-          <h2>{name}</h2>
+          <h2>{store.getState().name}</h2>
           <p>
-            <span className="faint">I am</span> a {description}
+            <span className="faint">I am</span> a {"description"}
           </p>
           <p>
             {" "}
-            <span className="faint">I like</span> {likes}
+            <span className="faint">I like</span> {"likes"}
           </p>
 
           <p className="User__info__details User__info__divider faint">
             <span>Name: </span>
-            <span>{name}</span>
+            <span>{"name"}</span>
           </p>
           <p className="User__info__details faint">
             <span>Location: </span>
-            <span>{location}</span>
+            <span>{"location"}</span>
           </p>
         </section>
+
+        <div className="mt-3">
+          <ButtonGroup aria-label="Basic example" style={{ width: "100%" }}>
+            <Button
+              id="daniel"
+              variant="success"
+              onClick={this.dispatchBtnAction}
+            >
+              Daniel
+            </Button>
+            <Button
+              id="harris"
+              variant="success ml-4"
+              onClick={this.dispatchBtnAction}
+            >
+              Harris
+            </Button>
+            <Button
+              id="tom"
+              variant="success ml-4"
+              onClick={this.dispatchBtnAction}
+            >
+              Tom
+            </Button>
+          </ButtonGroup>
+        </div>
       </div>
     );
   }
 }
 
-export default App;
+const mapStateToProps = (state) => {
+  return {
+    name: state.name,
+  };
+};
+
+export default connect(mapStateToProps)(App)
